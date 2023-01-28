@@ -1,0 +1,271 @@
+---
+format: pdf
+geometry:
+  - top=5mm
+  - left=10.5mm
+  - right=10.5mm
+  - bottom=20mm
+  - heightrounded
+editor_options: 
+  chunk_output_type: console
+fontfamily: palatino
+fontsize: 11pt
+---
+
+```{r libs and setup}
+#| echo: false
+#| warning: false
+
+# load libraries
+library(dplyr)
+library(cowplot)
+library(ggplot2)
+
+# load local functions
+source("./src/fn_body_tab.R") # table fn for neat text sections
+source("./src/fn_cwaffle.R")  # custom waffle fn for skills vis
+
+# get fonts
+sysfonts::font_add_google("Roboto Condensed")
+sysfonts::font_add_google("Roboto")
+sysfonts::font_add("fa-solid", "./fonts/Font Awesome 6 Free-Solid-900.otf")
+showtext::showtext_auto()
+
+# colors for waffle-vis
+color_main <- "#ddcba4" # sdu analytics color
+color_waffle_full <- "dimgray"
+color_waffle_bg <- colorspace::lighten(color_main, 
+                                       amount = 0.75, 
+                                       space = "HLS")
+color_waffle_empty <- colorspace::lighten(color_main, 
+                                          amount = 0.40, 
+                                          space = "HLS"
+                                          )
+
+# hide na's in tables
+options(knitr.kable.NA = "")
+
+
+```
+
+```{r get data}
+#| echo: false
+
+tb_work_experience <- readxl::read_xlsx("./data/cv_work_experience.xlsx")
+tb_profile <- readxl::read_xlsx("./data/cv_profile.xlsx")
+tb_publications <- readxl::read_xlsx("./data/cv_publications.xlsx")
+tb_educatio <- readxl::read_xlsx("./data/cv_education.xlsx")
+
+```
+
+```{r ready cv banner}
+#| echo: false
+#| fig-align: center
+#| fig-height: 1.50
+#| fig-width: 8.20
+
+p_banner_photo <- plot_grid(
+  ggdraw() + 
+    draw_image("NicePng_star-trek-png_2661521.png")
+  
+)
+
+p_banner_title <- plot_grid(
+  nrow = 4, 
+  rel_heights = c(0.25, 0.20, 0.30, 1),
+  
+  NULL, 
+  ggdraw() + 
+    draw_label("Data",
+               size = 20, 
+               fontface = "bold", 
+               fontfamily = "Roboto",
+               hjust = 0, x = 0),
+  ggdraw() + 
+    draw_label("As specialized in AI as you get",
+               size = 9, 
+               fontface = "bold", 
+               fontfamily = "Roboto",
+               hjust = 0, x = 0),
+  NULL
+)
+
+p_banner_contact <- plot_grid(
+  align="h", axis="l",
+  ncol = 2, nrow = 5,
+  rel_widths = c(0.10, 1),
+  rel_heights = c(0.075, 0.20, 0.20, 0.20, 0.20),
+  
+  NULL, NULL,
+  
+  ggdraw() + draw_label("\Uf095", fontfamily = "fa-solid", size = 11), 
+  ggdraw() + draw_label("3161 0011", fontfamily = "Roboto", hjust = 0, x = 0.05, size = 9),
+  
+  # hjust = -0.33, x = 0, y = 0.700)
+  
+  ggdraw() + draw_label("\U40", fontfamily = "fa-solid", size = 11), 
+  ggdraw() + draw_label("jakoberkmen@live.com", fontfamily = "Roboto", hjust = 0, x = 0.05, size = 9),
+  
+  ggdraw() + draw_label("\Ue3af", fontfamily = "fa-solid", size = 11), 
+  ggdraw() + draw_label("Skovs-Højrup-Vej 37,\n5270 Odense N", fontfamily = "Roboto", hjust = 0, x = 0.05, size = 9),
+  
+  NULL, NULL
+  
+  
+)
+
+
+p_banner_top <- plot_grid(
+    ncol = 3, nrow = 2,
+    align="v", axis="l",
+    rel_widths = c(0.40, 1.10, 0.50),
+    rel_heights = c(0.05, 0.95),
+
+    NULL, NULL, NULL, 
+    p_banner_photo, p_banner_title, p_banner_contact,
+    NULL, NULL, NULL
+    ) +
+    theme(plot.background = element_rect(fill = color_main, 
+                                         colour = color_main))
+
+p_banner_top
+
+
+```
+
+
+
+```{r ready cv vis}
+#| echo: false
+
+# grid parts top: title ----------------------------------------------------
+
+# center align
+p_title <- plot_grid(
+  ggdraw() + 
+    draw_label("SKILLS AND COMPETENCIES",
+               size = 11,
+               fontface = "bold",
+               fontfamily = "Roboto Condensed",
+               hjust = 0, x = 0.40, y = 0.65)
+  )
+
+
+# grid parts main: waffles -------------------------------------------------
+
+p_skills_specific <- plot_grid(
+  ncol = 1, align="v", axis="l", 
+  
+  ggdraw() + 
+    draw_label("Specific skills",
+               size = 10, 
+               fontface = "bold.italic", 
+               fontfamily = "Roboto Condensed",
+               hjust = 0, x = -0.08, y = 0.700),
+  fn_cwaffle(c(5, 0), "R"), 
+  fn_cwaffle(c(5, 0), "Julia"),
+  fn_cwaffle(c(5, 0), "Python"),
+  fn_cwaffle(c(5, 0), "Javascript"),
+  fn_cwaffle(c(5, 0), "Assembly"), 
+  fn_cwaffle(c(5, 0), "Machine code")
+)
+
+p_competencies_techn <- plot_grid(
+  ncol = 1, align="v", axis="l", 
+
+  ggdraw() + draw_label("Technical competencies",
+                        size = 10, 
+                        fontface = "bold.italic", 
+                        fontfamily = "Roboto Condensed",
+                        hjust = 0, x = -0.575, y = 0.700),
+  fn_cwaffle(c(5, 0), "ETL"), 
+  fn_cwaffle(c(5, 0), "Regression analysis"),
+  fn_cwaffle(c(4, 1), "Classification analysis"),
+  fn_cwaffle(c(4, 1), "Machine learning"),
+  fn_cwaffle(c(4, 1), "Visualisation"), 
+  fn_cwaffle(c(2, 3), "Qualitative interviews")
+)
+
+p_competencies_pers <- plot_grid(
+  ncol = 1, align = "v", axis = "l", 
+
+  ggdraw() + draw_label("Personal competencies",
+                        size = 10, 
+                        fontface = "bold.italic", 
+                        fontfamily = "Roboto Condensed",
+                        hjust = 0, x = -0.45, y = 0.700),
+  fn_cwaffle(c(4, 1), "Solution-orientated"), 
+  fn_cwaffle(c(5, 0), "Systematic"),
+  fn_cwaffle(c(2, 3), "Social skills"),
+  fn_cwaffle(c(1, 4), "Compassion"), 
+  NULL, 
+  NULL)
+
+
+
+# grid combine ------------------------------------------------------------
+
+# combine main grid (waffles)
+grid_main <- plot_grid(ncol = 3, 
+                       rel_widths = c(1, 1, 1),
+                       align="v", axis="lr",
+          
+                       p_skills_specific, p_competencies_techn, p_competencies_pers) 
+
+# combine to final grid (with top and bottom null-margin + background color)
+grid_combined <- plot_grid(nrow = 4, ncol = 1, 
+                           rel_widths = c(1, 1, 1), 
+                           rel_heights = c(0.15, 1.15, 4, 0.80),
+                           align="v", axis="lr",
+                           
+                           NULL, 
+                           p_title, 
+                           grid_main, 
+                           NULL) +
+  theme(plot.background = element_rect(fill = color_waffle_bg, 
+                                       colour = color_waffle_bg))
+
+```
+
+
+
+```{r body tab profil}
+#| echo: false
+fn_body_tab(data = tb_profile)
+
+```
+
+```{r body tab erhverserfaring}
+#| echo: false
+fn_body_tab(data = tb_work_experience)
+
+```
+
+\vspace{16pt}
+
+```{r body plot visualized_cv}
+#| echo: false
+#| fig-align: center
+#| fig-height: 2.20
+#| fig-width: 8.20
+
+grid_combined 
+
+```
+
+```{r body tab publikationer}
+#| echo: false
+fn_body_tab(data = tb_publications)
+
+```
+
+```{r body tab uddannelse}
+#| echo: false
+fn_body_tab(data = tb_educatio)
+
+```
+
+\vspace{64pt}
+
+------------------------------------------------------------------------
+
