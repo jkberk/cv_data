@@ -54,7 +54,7 @@ options(knitr.kable.NA = "")
 tb_work_experience <- readxl::read_xlsx("./data/cv_work_experience.xlsx")
 tb_profile <- readxl::read_xlsx("./data/cv_profile.xlsx")
 tb_publications <- readxl::read_xlsx("./data/cv_publications.xlsx")
-tb_educatio <- readxl::read_xlsx("./data/cv_education.xlsx")
+tb_education <- readxl::read_xlsx("./data/cv_education.xlsx")
 
 ```
 
@@ -74,21 +74,21 @@ p_banner_photo <- plot_grid(
 
 p_banner_title <- plot_grid(
   nrow = 4, 
-  rel_heights = c(0.25, 0.20, 0.30, 1),
+  rel_heights = c(0.25, 0.40, 0.30, 1),
   
   NULL, 
   ggdraw() + 
-    draw_label("Data",
+    draw_label("DATA",
                size = 20, 
                fontface = "bold", 
                fontfamily = "Roboto",
-               hjust = 0, x = 0),
+               hjust = 0, x = 0.05),
   ggdraw() + 
     draw_label("As specialized in AI as you get",
                size = 9, 
                fontface = "bold", 
                fontfamily = "Roboto",
-               hjust = 0, x = 0),
+               hjust = 0, x = 0.05),
   NULL
 )
 
@@ -96,21 +96,21 @@ p_banner_contact <- plot_grid(
   align="h", axis="l",
   ncol = 2, nrow = 5,
   rel_widths = c(0.10, 1),
-  rel_heights = c(0.075, 0.20, 0.20, 0.20, 0.20),
+  rel_heights = c(0.10, 0.15, 0.15, 0.225, 0.20),
   
   NULL, NULL,
   
   ggdraw() + draw_label("\Uf095", fontfamily = "fa-solid", size = 11), 
-  ggdraw() + draw_label("3161 0011", fontfamily = "Roboto", hjust = 0, x = 0.05, size = 9),
+  ggdraw() + draw_label("01100100", fontfamily = "Roboto", hjust = 0, x = 0.05, size = 9),
   
   # hjust = -0.33, x = 0, y = 0.700)
   
   ggdraw() + draw_label("\U40", fontfamily = "fa-solid", size = 11), 
-  ggdraw() + draw_label("jakoberkmen@live.com", fontfamily = "Roboto", hjust = 0, x = 0.05, size = 9),
+  ggdraw() + draw_label("data@starfleet", fontfamily = "Roboto", hjust = 0, x = 0.05, size = 9),
   
   ggdraw() + draw_label("\Ue3af", fontfamily = "fa-solid", size = 11), 
-  ggdraw() + draw_label("Skovs-Højrup-Vej 37,\n5270 Odense N", fontfamily = "Roboto", hjust = 0, x = 0.05, size = 9),
-  
+  ggdraw() + draw_label("USS-Enterprise-D,\nDeck 2, room 3653.", fontfamily = "Roboto", hjust = 0, x = 0.05, size = 9),
+
   NULL, NULL
   
   
@@ -120,7 +120,7 @@ p_banner_contact <- plot_grid(
 p_banner_top <- plot_grid(
     ncol = 3, nrow = 2,
     align="v", axis="l",
-    rel_widths = c(0.40, 1.10, 0.50),
+    rel_widths = c(0.40, 1.15, 0.45),
     rel_heights = c(0.05, 0.95),
 
     NULL, NULL, NULL, 
@@ -231,13 +231,13 @@ grid_combined <- plot_grid(nrow = 4, ncol = 1,
 
 
 
-```{r body tab profil}
+```{r body tab profile}
 #| echo: false
 fn_body_tab(data = tb_profile)
 
 ```
 
-```{r body tab erhverserfaring}
+```{r body tab work_experience}
 #| echo: false
 fn_body_tab(data = tb_work_experience)
 
@@ -255,15 +255,15 @@ grid_combined
 
 ```
 
-```{r body tab publikationer}
+```{r body tab publications}
 #| echo: false
 fn_body_tab(data = tb_publications)
 
 ```
 
-```{r body tab uddannelse}
+```{r body tab education}
 #| echo: false
-fn_body_tab(data = tb_educatio)
+fn_body_tab(data = tb_education)
 
 ```
 
