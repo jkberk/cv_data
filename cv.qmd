@@ -59,7 +59,82 @@ tb_educatio <- readxl::read_xlsx("./data/cv_education.xlsx")
 ```
 
 
-### HERRO WOLD - BANNER HERE PLS.  
+
+```{r ready cv banner}
+#| echo: false
+#| fig-align: center
+#| fig-height: 1.50
+#| fig-width: 8.20
+
+p_banner_photo <- plot_grid(
+  ggdraw() + 
+    draw_image("NicePng_star-trek-png_2661521.png")
+  
+)
+
+p_banner_title <- plot_grid(
+  nrow = 4, 
+  rel_heights = c(0.25, 0.20, 0.30, 1),
+  
+  NULL, 
+  ggdraw() + 
+    draw_label("Data",
+               size = 20, 
+               fontface = "bold", 
+               fontfamily = "Roboto",
+               hjust = 0, x = 0),
+  ggdraw() + 
+    draw_label("As specialized in AI as you get",
+               size = 9, 
+               fontface = "bold", 
+               fontfamily = "Roboto",
+               hjust = 0, x = 0),
+  NULL
+)
+
+p_banner_contact <- plot_grid(
+  align="h", axis="l",
+  ncol = 2, nrow = 5,
+  rel_widths = c(0.10, 1),
+  rel_heights = c(0.075, 0.20, 0.20, 0.20, 0.20),
+  
+  NULL, NULL,
+  
+  ggdraw() + draw_label("\Uf095", fontfamily = "fa-solid", size = 11), 
+  ggdraw() + draw_label("3161 0011", fontfamily = "Roboto", hjust = 0, x = 0.05, size = 9),
+  
+  # hjust = -0.33, x = 0, y = 0.700)
+  
+  ggdraw() + draw_label("\U40", fontfamily = "fa-solid", size = 11), 
+  ggdraw() + draw_label("jakoberkmen@live.com", fontfamily = "Roboto", hjust = 0, x = 0.05, size = 9),
+  
+  ggdraw() + draw_label("\Ue3af", fontfamily = "fa-solid", size = 11), 
+  ggdraw() + draw_label("Skovs-Højrup-Vej 37,\n5270 Odense N", fontfamily = "Roboto", hjust = 0, x = 0.05, size = 9),
+  
+  NULL, NULL
+  
+  
+)
+
+
+p_banner_top <- plot_grid(
+    ncol = 3, nrow = 2,
+    align="v", axis="l",
+    rel_widths = c(0.40, 1.10, 0.50),
+    rel_heights = c(0.05, 0.95),
+
+    NULL, NULL, NULL, 
+    p_banner_photo, p_banner_title, p_banner_contact,
+    NULL, NULL, NULL
+    ) +
+    theme(plot.background = element_rect(fill = color_main, 
+                                         colour = color_main))
+
+p_banner_top
+
+
+```
+
 
 
 ```{r ready cv vis}
